@@ -1,6 +1,7 @@
 CC = g++
 CFLAGS = -Wall -std=c++23
 SRC_DIR := src
+GUI_DIR := src/imgui
 OBJ_DIR := bin
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
@@ -19,12 +20,13 @@ clean:
 	rm -rf simulation
 	rm -rf documentation/html
 	rm -rf documentation/latex
-	rm -rf build
+	rm -rf build	
 
 .PHONY:
 run:
 	mkdir -p bin
-	make && ./simulation
+	make -C $(GUI_DIR) -f Makefile.emscripten serve
+#make && ./simulation
 
 .PHONY:
 test:
