@@ -1,0 +1,3 @@
+run emscripten:
+make -f Makefile.emscripten
+make -f Makefile.emscripten serve

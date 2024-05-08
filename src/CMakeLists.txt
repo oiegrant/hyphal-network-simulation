@@ -9,5 +9,5 @@ include_directories(include)
 
 # all files required for the standard election executable to be built
 add_library(election
-    Example.cpp
+    example.cpp
 )
