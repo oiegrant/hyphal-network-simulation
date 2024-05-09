@@ -7,6 +7,13 @@
 // - Documentation        https://dearimgui.com/docs (same as your local docs/ folder).
 // - Introduction, links and more at the top of imgui.cpp
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <GL/glut.h>
+#include <testRender.hpp>
+
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -17,6 +24,9 @@
 #else
 #include <SDL_opengl.h>
 #endif
+
+
+
 
 // This example can also compile and run with Emscripten! See 'Makefile.emscripten' for details.
 #ifdef __EMSCRIPTEN__
@@ -195,11 +205,99 @@ int main(int, char**)
             ImGui::End();
         }
 
+        // 4. Show the OpenGL viewport window
+        {
+            ImGui::Begin("OpenGL Viewport");
+
+            // Get the size of the window
+            ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+            ImVec2 startPos = ImGui::GetCursorScreenPos();
+
+            // Draw the line
+            glViewport((int)startPos.x, (int)startPos.y, (int)viewportSize.x, (int)viewportSize.y);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0, viewportSize.x, viewportSize.y, 0, -1, 1);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 0.0f, 0.0f); // Red color
+            glVertex2f(0.0f, 0.0f);      // Line start
+            glVertex2f(viewportSize.x, viewportSize.y); // Line end
+            glEnd();
+
+            // Test data for vertex array (4 vertices, 2 lines)
+            GLint testData[][4] = {
+                {10, 10, 50, 50},      // Line 1 (x1, y1, x2, y2)
+                {50, 50, 200, 100},    // Line 2 (x1, y1, x2, y2)
+                {250, 250, 350, 150},  // Additional lines you can uncomment
+                // {150, 300, 200, 200},
+            };
+            int numVertices = sizeof(testData) / sizeof(testData[0]); // Calculate number of vertices
+
+            testRender test = testRender();
+
+            test.displayLine(testData, numVertices);
+
+            ImGui::End();
+        }
+
+
+
+        //EXAMPLE: rendering with OpenGL
+        // ImGui::Begin("GameWindow");
+        // {
+        // // Using a Child allow to fill all the space of the window.
+        // // It also alows customization
+        // ImGui::BeginChild("GameRender");
+        // // Get the size of the child (i.e. the whole draw size of the windows).
+        // ImVec2 wsize = ImGui::GetWindowSize();
+        // // Because I use the texture from OpenGL, I need to invert the V from the UV.
+        // ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
+        // ImGui::EndChild();
+        // }
+
+        //EXAMPLE: rendering with OpenGL
+        // My Game has a different viewport than the editor's one:
+        // const int W = 1080 / 2;
+        // const int H = 1920 / 2;
+        // // We set the same viewport size (plus margin) to the next window (if first use)
+        // ImGui::SetNextWindowSize(ImVec2(W + 10, H + 10),
+        //                         ImGuiSetCond_FirstUseEver);
+        // ImGui::Begin("Game rendering");
+        // {
+        //     // Get the current cursor position (where your window is)
+        //     ImVec2 pos = ImGui::GetCursorScreenPos();
+
+        //     // A boolean to allow me to stop the game rendering
+        //     if (runApp) {
+        //     glViewport(0, 0, W, H);
+        //     // Render the scene into an FBO
+        //     game->render(time);
+        //     // Restore previous viewport
+        //     glViewport(0, 0, w, h);
+        //     }
+        //     // Get the texture associated to the FBO
+        //     auto tex = game->getRendered();
+
+        //     // Ask ImGui to draw it as an image:
+        //     // Under OpenGL the ImGUI image type is GLuint
+        //     // So make sure to use "(void *)tex" but not "&tex"
+        //     ImGui::GetWindowDrawList()->AddImage(
+        //         (void *)tex, ImVec2(ImGui::GetItemRectMin().x + pos.x,
+        //                             ImGui::GetItemRectMin().y + pos.y),
+        //         ImVec2(pos.x + h / 2, pos.y + w / 2), ImVec2(0, 1), ImVec2(1, 0));
+        // }
+
+
+
+
         // Rendering
         ImGui::Render();
         glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // Update and Render additional Platform Windows

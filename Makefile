@@ -16,6 +16,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 .PHONY:
 clean:
+	make -C $(GUI_DIR) clean
 	rm -rf bin/*
 	rm -rf simulation
 	rm -rf documentation/html
@@ -25,8 +26,11 @@ clean:
 .PHONY:
 run:
 	mkdir -p bin
-	make -C $(GUI_DIR) -f Makefile.emscripten serve
+#make -C $(GUI_DIR) -f Makefile.emscripten serve
+	make -C $(GUI_DIR) all
+	make && (cd $(GUI_DIR) && ./app) 
 #make && ./simulation
+
 
 .PHONY:
 test:
