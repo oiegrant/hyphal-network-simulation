@@ -206,41 +206,41 @@ int main(int, char**)
         }
 
         // 4. Show the OpenGL viewport window
-        {
-            ImGui::Begin("OpenGL Viewport");
+        // {
+        //     ImGui::Begin("OpenGL Viewport");
 
-            // Get the size of the window
-            ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-            ImVec2 startPos = ImGui::GetCursorScreenPos();
+        //     // Get the size of the window
+        //     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+        //     ImVec2 startPos = ImGui::GetCursorScreenPos();
 
-            // Draw the line
-            glViewport((int)startPos.x, (int)startPos.y, (int)viewportSize.x, (int)viewportSize.y);
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glOrtho(0, viewportSize.x, viewportSize.y, 0, -1, 1);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-            glBegin(GL_LINES);
-            glColor3f(1.0f, 0.0f, 0.0f); // Red color
-            glVertex2f(0.0f, 0.0f);      // Line start
-            glVertex2f(viewportSize.x, viewportSize.y); // Line end
-            glEnd();
+        //     // Draw the line
+        //     glViewport((int)startPos.x, (int)startPos.y, (int)viewportSize.x, (int)viewportSize.y);
+        //     glMatrixMode(GL_PROJECTION);
+        //     glLoadIdentity();
+        //     glOrtho(0, viewportSize.x, viewportSize.y, 0, -1, 1);
+        //     glMatrixMode(GL_MODELVIEW);
+        //     glLoadIdentity();
+        //     glBegin(GL_LINES);
+        //     glColor3f(1.0f, 0.0f, 0.0f); // Red color
+        //     glVertex2f(0.0f, 0.0f);      // Line start
+        //     glVertex2f(viewportSize.x, viewportSize.y); // Line end
+        //     glEnd();
 
-            // Test data for vertex array (4 vertices, 2 lines)
-            GLint testData[][4] = {
-                {10, 10, 50, 50},      // Line 1 (x1, y1, x2, y2)
-                {50, 50, 200, 100},    // Line 2 (x1, y1, x2, y2)
-                {250, 250, 350, 150},  // Additional lines you can uncomment
-                // {150, 300, 200, 200},
-            };
-            int numVertices = sizeof(testData) / sizeof(testData[0]); // Calculate number of vertices
+        //     // Test data for vertex array (4 vertices, 2 lines)
+        //     GLint testData[][4] = {
+        //         {10, 10, 50, 50},      // Line 1 (x1, y1, x2, y2)
+        //         {50, 50, 200, 100},    // Line 2 (x1, y1, x2, y2)
+        //         {250, 250, 350, 150},  // Additional lines you can uncomment
+        //         // {150, 300, 200, 200},
+        //     };
+        //     int numVertices = sizeof(testData) / sizeof(testData[0]); // Calculate number of vertices
 
-            testRender test = testRender();
+        //     testRender test = testRender();
 
-            test.displayLine(testData, numVertices);
+        //     test.displayLine(testData, numVertices);
 
-            ImGui::End();
-        }
+        //     ImGui::End();
+        // }
 
 
 
@@ -288,6 +288,8 @@ int main(int, char**)
         //                             ImGui::GetItemRectMin().y + pos.y),
         //         ImVec2(pos.x + h / 2, pos.y + w / 2), ImVec2(0, 1), ImVec2(1, 0));
         // }
+        testRender test = testRender();
+        test.hello();
 
 
 

@@ -11,6 +11,7 @@ class testRender {
         testRender() {}
         ~testRender() {}
         void displayLine(GLint vertexData[][4], int numVertices);
+        void hello() { cout << "HELLO\n";}
 
 };
 

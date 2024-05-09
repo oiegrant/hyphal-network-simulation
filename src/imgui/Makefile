@@ -82,8 +82,8 @@ endif
 %.o:$(IMGUI_DIR)/backends/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:testRender.cpp
-	gcc $< $(shell pkg-config glfw3 glew --cflags --libs) -o $@
+# %.o:testRender.cpp
+# 	gcc $< $(shell pkg-config glfw3 glew --cflags --libs) -o $@
 
 all: $(EXE)
 	@echo Build complete for $(ECHO_MESSAGE)
