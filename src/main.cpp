@@ -134,7 +134,7 @@ int main(int, char**)
         
         
         //make call to my app here
-        myApp::render();
+        myApp::RenderUI_2();
 
         // Rendering
         ImGui::Render();

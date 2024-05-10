@@ -193,30 +193,6 @@ myApp.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/myApp.cpp.s
 .PHONY : myApp.cpp.s
 
-testRender.o: testRender.cpp.o
-.PHONY : testRender.o
-
-# target to build an object file
-testRender.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.o
-.PHONY : testRender.cpp.o
-
-testRender.i: testRender.cpp.i
-.PHONY : testRender.i
-
-# target to preprocess a source file
-testRender.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.i
-.PHONY : testRender.cpp.i
-
-testRender.s: testRender.cpp.s
-.PHONY : testRender.s
-
-# target to generate assembly for a file
-testRender.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.s
-.PHONY : testRender.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -233,9 +209,6 @@ help:
 	@echo "... myApp.o"
 	@echo "... myApp.i"
 	@echo "... myApp.s"
-	@echo "... testRender.o"
-	@echo "... testRender.i"
-	@echo "... testRender.s"
 .PHONY : help
 
 
