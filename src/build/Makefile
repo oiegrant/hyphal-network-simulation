@@ -169,6 +169,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+myApp.o: myApp.cpp.o
+.PHONY : myApp.o
+
+# target to build an object file
+myApp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/myApp.cpp.o
+.PHONY : myApp.cpp.o
+
+myApp.i: myApp.cpp.i
+.PHONY : myApp.i
+
+# target to preprocess a source file
+myApp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/myApp.cpp.i
+.PHONY : myApp.cpp.i
+
+myApp.s: myApp.cpp.s
+.PHONY : myApp.s
+
+# target to generate assembly for a file
+myApp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/myApp.cpp.s
+.PHONY : myApp.cpp.s
+
 testRender.o: testRender.cpp.o
 .PHONY : testRender.o
 
@@ -206,6 +230,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... myApp.o"
+	@echo "... myApp.i"
+	@echo "... myApp.s"
 	@echo "... testRender.o"
 	@echo "... testRender.i"
 	@echo "... testRender.s"

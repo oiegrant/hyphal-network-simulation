@@ -11,7 +11,7 @@ set(APP_TARGET imgui-demo.app)
 
 add_subdirectory(imgui)
 include_directories(${PROJECT_SOURCE_DIR})
-add_executable(${APP_TARGET} main.cpp testRender.cpp)
+add_executable(${APP_TARGET} main.cpp testRender.cpp myApp.cpp)
 target_link_libraries(${APP_TARGET} imgui)
 
 # glfw
