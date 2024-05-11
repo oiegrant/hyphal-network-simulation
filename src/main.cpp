@@ -17,7 +17,6 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error %d: %s\n", error, description);
@@ -67,13 +66,6 @@ int main(int, char**)
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
-    // glewInit();
-
-    // testRender test = testRender();
-    // test.hello();
-    // test.create_triangle();
-    // test.create_shaders();
-    // test.create_framebuffer();
 
     // Create window with graphics context
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
@@ -89,6 +81,10 @@ int main(int, char**)
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+    if (glewInit() != GLEW_OK) {
+            return -1;
+        }
 
     ImGui::StyleColorsDark();
 
@@ -108,17 +104,12 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    #ifdef __EMSCRIPTEN__
-    // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-    // You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
-    io.IniFilename = nullptr;
-    EMSCRIPTEN_MAINLOOP_BEGIN
-    #else
-        while (!glfwWindowShouldClose(window))
-    #endif
+    testRender test = testRender();
+    test.create_triangle();
+    test.create_shaders();
+    test.create_framebuffer();
 
-
-
+    while (!glfwWindowShouldClose(window))
     // Main loop
     {
         glfwPollEvents();
@@ -126,18 +117,51 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        //make call to my app here
+        // myApp::RenderUI(window);
+        
         // 1. Show a simple window
         // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
         if(show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
         
+
+        // ImGui::NewFrame();
+        ImGui::Begin("My Scene");
+
+        const float window_width = ImGui::GetContentRegionAvail().x;
+		const float window_height = ImGui::GetContentRegionAvail().y;
+
+        test.rescale_framebuffer(window_width, window_height);
+		glViewport(0, 0, window_width, window_height);
+
         
-        //make call to my app here
-        myApp::RenderUI_2();
+        ImVec2 pos = ImGui::GetCursorScreenPos();
+
+        ImGui::GetWindowDrawList()->AddImage(
+			(void *)test.texture_id, 
+			ImVec2(pos.x, pos.y), 
+			ImVec2(pos.x + window_width, pos.y + window_height), 
+			ImVec2(0, 1), 
+			ImVec2(1, 0)
+		);
+
+        ImGui::End();
 
         // Rendering
         ImGui::Render();
+        test.bind_framebuffer();
+
+        glUseProgram(test.shader);
+		glBindVertexArray(test.VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		
+		test.unbind_framebuffer();
+
+        
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
@@ -164,10 +188,6 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-	// glDeleteFramebuffers(1, &test.FBO);
-	// glDeleteTextures(1, &test.texture_id);
-	// glDeleteRenderbuffers(1, &test.RBO);
 
     glfwDestroyWindow(window);
     glfwTerminate();

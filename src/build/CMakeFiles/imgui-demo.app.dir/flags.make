@@ -6,5 +6,5 @@ CXX_DEFINES = -D__Linux__
 
 CXX_INCLUDES = -I/home/grant/Documents/hyphae/simRepo/src
 
-CXX_FLAGS = -std=gnu++11
+CXX_FLAGS = -g -std=gnu++11
 
