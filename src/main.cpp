@@ -116,16 +116,11 @@ int main(int, char**)
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        //make call to my app here
-        // myApp::RenderUI(window);
         
         // 1. Show a simple window
         // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
         if(show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
-
-        
 
         // ImGui::NewFrame();
         ImGui::Begin("My Scene");
@@ -146,19 +141,17 @@ int main(int, char**)
 			ImVec2(0, 1), 
 			ImVec2(1, 0)
 		);
-
         ImGui::End();
 
         // Rendering
         ImGui::Render();
-        test.bind_framebuffer();
 
+        test.bind_framebuffer();
         glUseProgram(test.shader);
 		glBindVertexArray(test.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
 		glUseProgram(0);
-		
 		test.unbind_framebuffer();
 
         
