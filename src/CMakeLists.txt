@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(imgui-opengl-glfw-glew-cmake-demo)
+project(hyphal-network-simulation)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE 1)
 set(APP_VERSION_MAJOR 1)
 set(APP_VERSION_MINOR 0)
 
-set(APP_TARGET imgui-demo.app)
+set(APP_TARGET sim.app)
 
 add_subdirectory(imgui)
 include_directories(${PROJECT_SOURCE_DIR})
