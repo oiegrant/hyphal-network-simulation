@@ -2,9 +2,9 @@
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 
 #include <stdio.h>
-#include <myApp.hpp>
+#include <testRender_lines.hpp>
 #include <testRender.hpp>
-// #include <Example.hpp>
+#include <geometryUtil.hpp>
 
 #ifdef __Linux__
 #define GL3_PROTOTYPES 1
@@ -104,8 +104,18 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+     std::vector<std::vector<int>> input = {
+        {100, 100, 100, 200},
+        {200, 100, 400, 150},
+        {400, 600, 600, 400},
+        {300, 300, 500, 100},
+        {600,  50, 400, 100},
+        {400, 400, 800, 600}
+    };
+    
     testRender test = testRender();
-    test.create_triangle();
+    test.drawData = input;
+    test.create_lines();
     test.create_shaders();
     test.create_framebuffer();
 
@@ -122,18 +132,16 @@ int main(int, char**)
         if(show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        // ImGui::NewFrame();
         ImGui::Begin("My Scene");
 
         const float window_width = ImGui::GetContentRegionAvail().x;
 		const float window_height = ImGui::GetContentRegionAvail().y;
 
-        test.rescale_framebuffer(window_width, window_height);
+        // test.rescale_framebuffer(window_width, window_height);
 		glViewport(0, 0, window_width, window_height);
 
         
         ImVec2 pos = ImGui::GetCursorScreenPos();
-
         ImGui::GetWindowDrawList()->AddImage(
 			(void *)test.texture_id, 
 			ImVec2(pos.x, pos.y), 
@@ -141,19 +149,13 @@ int main(int, char**)
 			ImVec2(0, 1), 
 			ImVec2(1, 0)
 		);
+
         ImGui::End();
 
         // Rendering
         ImGui::Render();
 
-        test.bind_framebuffer();
-        glUseProgram(test.shader);
-		glBindVertexArray(test.VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindVertexArray(0);
-		glUseProgram(0);
-		test.unbind_framebuffer();
-
+        test.render();
         
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);

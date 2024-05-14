@@ -120,17 +120,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named imgui-demo.app
+# Target rules for targets named sim.app
 
 # Build rule for target.
-imgui-demo.app: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 imgui-demo.app
-.PHONY : imgui-demo.app
+sim.app: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sim.app
+.PHONY : sim.app
 
 # fast build rule for target.
-imgui-demo.app/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/build
-.PHONY : imgui-demo.app/fast
+sim.app/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/build
+.PHONY : sim.app/fast
 
 #=============================================================================
 # Target rules for targets named imgui
@@ -150,7 +150,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -158,7 +158,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -166,7 +166,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 testRender.o: testRender.cpp.o
@@ -174,7 +174,7 @@ testRender.o: testRender.cpp.o
 
 # target to build an object file
 testRender.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/testRender.cpp.o
 .PHONY : testRender.cpp.o
 
 testRender.i: testRender.cpp.i
@@ -182,7 +182,7 @@ testRender.i: testRender.cpp.i
 
 # target to preprocess a source file
 testRender.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/testRender.cpp.i
 .PHONY : testRender.cpp.i
 
 testRender.s: testRender.cpp.s
@@ -190,7 +190,7 @@ testRender.s: testRender.cpp.s
 
 # target to generate assembly for a file
 testRender.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/imgui-demo.app.dir/build.make CMakeFiles/imgui-demo.app.dir/testRender.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sim.app.dir/build.make CMakeFiles/sim.app.dir/testRender.cpp.s
 .PHONY : testRender.cpp.s
 
 # Help Target
@@ -202,7 +202,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... imgui"
-	@echo "... imgui-demo.app"
+	@echo "... sim.app"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -9,20 +9,46 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-void testRender::create_triangle() {
-    GLfloat vertices[] = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    };
+
+
+void testRender::create_lines() {
+    
+    std::vector<GLfloat> vertices;
+    vertices.reserve(drawData.size() * 6); // Pre-allocate space for all vertices
+
+    // Convert coordinates to OpenGL's normalized device coordinates (NDC)
+    for (const auto& line : drawData) {
+        if (line.size() < 4) {
+            std::cerr << "Skipping invalid line data." << std::endl;
+            continue; // Skip incomplete data
+        }
+        
+        float x1 = static_cast<float>(line[0]) / 400.0f - 1.0f; // Assuming 800 is the width of the screen
+        float y1 = static_cast<float>(line[1]) / 300.0f - 1.0f; // Assuming 600 is the height of the screen
+        float x2 = static_cast<float>(line[2]) / 400.0f - 1.0f;
+        float y2 = static_cast<float>(line[3]) / 300.0f - 1.0f;
+
+        // First endpoint (x1, y1, 0)
+        vertices.push_back(x1);
+        vertices.push_back(y1);
+        vertices.push_back(0.0f);
+
+        // Second endpoint (x2, y2, 0)
+        vertices.push_back(x2);
+        vertices.push_back(y2);
+        vertices.push_back(0.0f);
+    }
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
+
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
+
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
@@ -122,11 +148,11 @@ void testRender::rescale_framebuffer(float width, float height) {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 }
 
-void testRender::initialize() {
-    create_triangle();
-    create_shaders();
-    create_framebuffer();
-}
+// void testRender::initialize() {
+//     create_triangle();
+//     create_shaders();
+//     create_framebuffer();
+// }
 
 void testRender::cleanup() {
     glDeleteVertexArrays(1, &VAO);
@@ -138,10 +164,11 @@ void testRender::cleanup() {
 }
 
 void testRender::render() {
-    bind_framebuffer();
-    // Placeholder: you might want to setup viewport, clear buffers, etc.
-    glUseProgram(shader);
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3); // Assumes you are drawing a simple triangle
-    unbind_framebuffer();
+        bind_framebuffer();
+        glUseProgram(shader);
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_LINES, 0, drawData.size()*2);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		unbind_framebuffer();
 }

@@ -7,6 +7,7 @@
 #define TEST_RENDER
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class testRender {
@@ -14,6 +15,7 @@ class testRender {
         const GLint WIDTH = 800;
         const GLint HEIGHT = 600;
         GLuint VAO, VBO, FBO, RBO, texture_id, shader;
+        std::vector<std::vector<int>> drawData;
 
         testRender() {}
         ~testRender() {}
@@ -22,6 +24,8 @@ class testRender {
         void cleanup();
         void render();
         void rescale_framebuffer(float width, float height);
+        void create_lines();
+        void create_lines(const std::vector<std::vector<int>>& lines);
         void create_triangle();
         void create_shaders();
         void create_framebuffer();

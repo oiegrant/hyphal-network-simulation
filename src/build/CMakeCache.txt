@@ -145,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=imgui-opengl-glfw-glew-cmake-demo
+CMAKE_PROJECT_NAME:STATIC=hyphal-network-simulation
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -256,6 +256,15 @@ OPENGL_xmesa_INCLUDE_DIR:PATH=OPENGL_xmesa_INCLUDE_DIR-NOTFOUND
 
 //The directory containing a CMake configuration file for glfw3.
 glfw3_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/glfw3
+
+//Value Computed by CMake
+hyphal-network-simulation_BINARY_DIR:STATIC=/home/grant/Documents/hyphae/simRepo/src/build
+
+//Value Computed by CMake
+hyphal-network-simulation_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+hyphal-network-simulation_SOURCE_DIR:STATIC=/home/grant/Documents/hyphae/simRepo/src
 
 //Value Computed by CMake
 imgui-opengl-glfw-glew-cmake-demo_BINARY_DIR:STATIC=/home/grant/Documents/hyphae/simRepo/src/build
