@@ -9,6 +9,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+
 
 
 void testRender::create_lines() {
@@ -23,6 +27,8 @@ void testRender::create_lines() {
             continue; // Skip incomplete data
         }
         
+        //TODO update the screen width to be dynamic?
+        //This sets the vertices to be between -1/+1
         float x1 = static_cast<float>(line[0]) / 400.0f - 1.0f; // Assuming 800 is the width of the screen
         float y1 = static_cast<float>(line[1]) / 300.0f - 1.0f; // Assuming 600 is the height of the screen
         float x2 = static_cast<float>(line[2]) / 400.0f - 1.0f;
@@ -101,6 +107,13 @@ void testRender::create_shaders() {
         std::cout << "Error validating program:\n" << log << '\n';
         return;
     }
+
+    // Retrieve uniform locations
+    projMatrixLoc = glGetUniformLocation(shader, "projectionMatrix");
+    viewMatrixLoc = glGetUniformLocation(shader, "viewMatrix");
+    if (projMatrixLoc == -1 || viewMatrixLoc == -1) {
+        std::cout << "Error finding uniform locations.\n";
+    }
 }
 
 void testRender::create_framebuffer() {
@@ -148,11 +161,36 @@ void testRender::rescale_framebuffer(float width, float height) {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 }
 
-// void testRender::initialize() {
-//     create_triangle();
-//     create_shaders();
-//     create_framebuffer();
-// }
+void testRender::initialize(GLFWwindow* window) {
+
+    this->window = window; // Store the GLFWwindow pointer in your class
+    glfwSetWindowUserPointer(window, this); // Set this as user pointer
+    create_lines();
+    create_shaders();
+    create_framebuffer();
+
+    // Set GLFW callbacks
+    glfwSetScrollCallback(window, scroll_callback);
+}
+
+void testRender::handleMouseScroll(float offset) {
+    zoomFactor *= (1.0f + offset * 0.05f);
+}
+
+void testRender::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    testRender* render = static_cast<testRender*>(glfwGetWindowUserPointer(window));
+    if (render && !ImGui::GetIO().WantCaptureMouse) {
+        render->mouseScrolled = true;
+        render->scrollOffset = static_cast<float>(yoffset);
+    }
+}
+
+void testRender::update_matrices() {
+    projectionMatrix = glm::perspective(glm::radians(45.0f * zoomFactor), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+    viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+    viewMatrix = glm::rotate(viewMatrix, glm::radians(rotationX), glm::vec3(1, 0, 0));
+    viewMatrix = glm::rotate(viewMatrix, glm::radians(rotationY), glm::vec3(0, 1, 0));
+}
 
 void testRender::cleanup() {
     glDeleteVertexArrays(1, &VAO);
@@ -164,11 +202,17 @@ void testRender::cleanup() {
 }
 
 void testRender::render() {
-        bind_framebuffer();
-        glUseProgram(shader);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_LINES, 0, drawData.size()*2);
-		glBindVertexArray(0);
-		glUseProgram(0);
-		unbind_framebuffer();
+    update_matrices();
+    
+    bind_framebuffer();
+    glUseProgram(shader);
+    glBindVertexArray(VAO);
+    
+    glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+    glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+    glDrawArrays(GL_LINES, 0, drawData.size()*2);
+    glBindVertexArray(0);
+    glUseProgram(0);
+    unbind_framebuffer();
 }

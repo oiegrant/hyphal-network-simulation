@@ -115,9 +115,7 @@ int main(int, char**)
     
     testRender test = testRender();
     test.drawData = input;
-    test.create_lines();
-    test.create_shaders();
-    test.create_framebuffer();
+    test.initialize(window);
 
     while (!glfwWindowShouldClose(window))
     // Main loop
@@ -173,6 +171,15 @@ int main(int, char**)
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
+        }
+
+        // Check if ImGui is not using the mouse
+        if (!ImGui::GetIO().WantCaptureMouse) {
+            // Handle mouse inputs for OpenGL here
+            if (test.mouseScrolled) {
+                test.handleMouseScroll(test.scrollOffset);
+                test.mouseScrolled = false; // Reset scroll detection flag
+            }
         }
 
         glfwSwapBuffers(window);
